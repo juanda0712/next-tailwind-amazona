@@ -8,10 +8,10 @@ export default function Product() {
   const { query } = useRouter();
   const { slug } = query;
   const product = data.products.find((x) => x.slug === slug);
-
   if (!product) {
     return <h1>Product Not Exist</h1>;
   }
+
   return (
     <Layout>
       <div className="py-2">

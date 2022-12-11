@@ -1,6 +1,28 @@
 import Image from 'next/image';
+import { useContext } from 'react';
+import { Store } from '../utils/Store';
 
 export default function ProductView({ product }) {
+  const { state, dispatch } = useContext(Store);
+
+  const addToCardHandler = () => {
+    const existItem = state.cart.cartItems.find(
+      (item) => item.slug === product.slug
+    );
+    const quantity = existItem ? existItem.quantity + 1 : 1;
+
+    if (existItem && quantity > existItem.countInStock) {
+      alert('Sorry. Product out of stock');
+      return;
+    }
+
+    const update = {
+      type: 'CART_ADD_ITEM',
+      payload: { ...product, quantity },
+    };
+    dispatch(update);
+  };
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-4 md:gap-3">
       <div className="md:col-span-2">
@@ -35,7 +57,12 @@ export default function ProductView({ product }) {
             <div>Status</div>
             <div>{product.countInStock > 0 ? 'In Stock' : 'Unavailable'}</div>
           </div>
-          <button className="primary-button w-full">Add to cart</button>
+          <button
+            className="primary-button w-full"
+            onClick={() => addToCardHandler()}
+          >
+            Add to cart
+          </button>
         </div>
       </div>
     </div>
