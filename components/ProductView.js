@@ -2,6 +2,7 @@ import Image from 'next/image';
 import { useContext } from 'react';
 import { Store } from '../utils/Store';
 import { useRouter } from 'next/router';
+
 export default function ProductView({ product }) {
   const { state, dispatch } = useContext(Store);
   const router = useRouter();

@@ -87,7 +87,10 @@ export default function CartItems({ cartItems }) {
           </il>
           <li>
             <div className="primary-button w-full text-center">
-              <Link href="/shipping" className="inline-block w-full">
+              <Link
+                href="login?redirect=/shipping"
+                className="inline-block w-full"
+              >
                 Check Out
               </Link>
             </div>
