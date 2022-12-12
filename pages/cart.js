@@ -3,7 +3,9 @@ import { useContext } from 'react';
 import CartItems from '../components/CartItems';
 import Layout from '../components/Layout';
 import { Store } from '../utils/Store';
-export default function Cart() {
+import dynamic from 'next/dynamic';
+
+function CartScreen() {
   const { state } = useContext(Store);
   const { cartItems } = state.cart;
 
@@ -20,3 +22,5 @@ export default function Cart() {
     </Layout>
   );
 }
+
+export default dynamic(() => Promise.resolve(CartScreen), { ssr: false });

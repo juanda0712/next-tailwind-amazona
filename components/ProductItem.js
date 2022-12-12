@@ -11,7 +11,6 @@ export default function ProductItem({ product }) {
           alt={name}
           width={300}
           height={300}
-          layout="responsive"
           className="rounded shadow "
         ></Image>
       </Link>
