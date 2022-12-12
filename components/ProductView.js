@@ -1,10 +1,10 @@
 import Image from 'next/image';
 import { useContext } from 'react';
 import { Store } from '../utils/Store';
-
+import { useRouter } from 'next/router';
 export default function ProductView({ product }) {
   const { state, dispatch } = useContext(Store);
-
+  const router = useRouter();
   const addToCardHandler = () => {
     const existItem = state.cart.cartItems.find(
       (item) => item.slug === product.slug
@@ -21,6 +21,8 @@ export default function ProductView({ product }) {
       payload: { ...product, quantity },
     };
     dispatch(update);
+
+    router.push('/cart');
   };
 
   return (
