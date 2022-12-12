@@ -1,8 +1,11 @@
+import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useContext, useEffect, useState } from 'react';
 import { Store } from '../../utils/Store';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Header() {
+  const { status, data: session } = useSession();
   const { state } = useContext(Store);
   const { cartItems } = state.cart;
   const [cartItemsCount, setCartItemsCount] = useState(0);
@@ -28,9 +31,15 @@ export default function Header() {
                 </span>
               )}
             </Link>
-            <Link href="/login" className="p-2">
-              Login
-            </Link>
+            {status === 'loading' ? (
+              'Loading'
+            ) : session?.user ? (
+              session.user.name
+            ) : (
+              <Link href="/login" className="p-2">
+                Login
+              </Link>
+            )}
           </div>
         </nav>
       </header>

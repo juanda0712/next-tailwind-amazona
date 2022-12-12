@@ -1,20 +1,45 @@
 import Link from 'next/link';
 import Layout from '../components/Layout';
 import { useForm } from 'react-hook-form';
+import { signIn, useSession } from 'next-auth/react';
+import { getError } from '../utils/error';
+import { toast } from 'react-toastify';
+import { useEffect } from 'react';
+import { useRouter } from 'next/router';
 
 export default function LoginScreen() {
+  const { data: session } = useSession();
+  const router = useRouter();
+  const { redirect } = router.query;
+  useEffect(() => {
+    if (session?.user) {
+      router.push(redirect || '/');
+    }
+  }, [router, session, redirect]);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  const submitHandler = ({ email, password }) => {
-    console.log(email, password);
+  const submitHandler = async ({ email, password }) => {
+    try {
+      const result = await signIn('credentials', {
+        redirect: false,
+        email,
+        password,
+      });
+      if (result.error) {
+        toast.error(result.error);
+      }
+    } catch (error) {
+      toast.error(getError(error));
+    }
   };
 
   return (
-    <Layout>
+    <Layout title="Login">
       <form
         className="mx-auto max-w-screen-md"
         onSubmit={handleSubmit(submitHandler)}
@@ -56,7 +81,9 @@ export default function LoginScreen() {
           )}
         </div>
         <div className="mb-4">
-          <button className="primary-button">Login</button>
+          <button className="primary-button" type="submit">
+            Login
+          </button>
         </div>
         <div className="mb-4">
           Don&apos;t have an account? &nbsp;
