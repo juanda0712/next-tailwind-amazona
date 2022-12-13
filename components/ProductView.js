@@ -2,19 +2,23 @@ import Image from 'next/image';
 import { useContext } from 'react';
 import { Store } from '../utils/Store';
 import { useRouter } from 'next/router';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
 export default function ProductView({ product }) {
   const { state, dispatch } = useContext(Store);
   const router = useRouter();
-  const addToCardHandler = () => {
+
+  const addToCardHandler = async () => {
     const existItem = state.cart.cartItems.find(
       (item) => item.slug === product.slug
     );
     const quantity = existItem ? existItem.quantity + 1 : 1;
 
-    if (existItem && quantity > existItem.countInStock) {
-      alert('Sorry. Product out of stock');
-      return;
+    const { data } = await axios.get(`/api/products/${product._id}`);
+
+    if (existItem && quantity > data.countInStock) {
+      return toast.error('Sorry. Product is out of stock');
     }
 
     const update = {
@@ -22,7 +26,6 @@ export default function ProductView({ product }) {
       payload: { ...product, quantity },
     };
     dispatch(update);
-
     router.push('/cart');
   };
 
