@@ -75,7 +75,7 @@ export default function CartItems({ cartItems }) {
       </div>
       <div className="card p-5">
         <ul>
-          <il>
+          <li>
             <div className="pb-3 text-xl">
               Subtotal (
               {cartItems.reduce((result, item) => result + item.quantity, 0)}) :{' '}
@@ -84,16 +84,14 @@ export default function CartItems({ cartItems }) {
                 0
               )}
             </div>
-          </il>
+          </li>
           <li>
-            <div className="primary-button w-full text-center">
-              <Link
-                href="login?redirect=/shipping"
-                className="inline-block w-full"
-              >
-                Check Out
-              </Link>
-            </div>
+            <Link
+              href="login?redirect=/shipping"
+              className="contents text-black"
+            >
+              <div className="primary-button w-full text-center">Check Out</div>
+            </Link>
           </li>
         </ul>
       </div>
